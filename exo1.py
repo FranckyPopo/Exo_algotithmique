@@ -42,8 +42,31 @@ def greater_than():
         list_ordonne.append(number_max)
         print("\n")
 
-        for index, number in enumerate(list_ordonne):
-            print(f"Le numéro {number} est a la place: {index + 1}")
+    for index, number in enumerate(list_ordonne):
+        print(f"Le numéro {number} est a la place: {index + 1}")
+        
+            
+def greater_than_2():
+    liste_number = []
+    list_ordonne = []
+    
+    while True:
+        try:
+            choice = int(input("Veuillez entrer un nombre: "))
+        except ValueError:
+            print("Veuillez entrer un nombre")
+        else:
+            if choice == 0: break
+            liste_number.append(choice)
+        
+    while len(liste_number) != 0:    
+        number_max = max(liste_number)
+        liste_number.remove(number_max)
+        list_ordonne.append(number_max)
+        print("")
+
+    for index, number in enumerate(list_ordonne):
+        print(f"Le numéro {number} est a la place: {index + 1}")
 
 
-greater_than()
+greater_than_2()
