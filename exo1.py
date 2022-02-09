@@ -3,7 +3,7 @@ import random
 
 def alphabet():
     alphabet = list(string.ascii_lowercase)
-    return alphabet
+    return alphabet 
 
 
 def just_price():
@@ -25,18 +25,25 @@ def just_price():
 def greater_than():
     i = 10
     liste_number = []
+    list_ordonne = []
     
-    while i != 0:
+    while len(liste_number) != 10:
         try:
-            choice = int(input("Veuillez entrer un nombre"))
+            choice = int(input("Veuillez entrer un nombre: "))
         except ValueError:
             print("Veuillez entrer un nombre")
         else:
             liste_number.append(choice)
             i -= 1
-            
-            if len(liste_number) == 10:
-                pass
+        
+    while len(liste_number) != 0:    
+        number_max = max(liste_number)
+        liste_number.remove(number_max)
+        list_ordonne.append(number_max)
+        print("\n")
+
+        for index, number in enumerate(list_ordonne):
+            print(f"Le numéro {number} est a la place: {index + 1}")
 
 
 greater_than()
