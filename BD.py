@@ -2,16 +2,18 @@ import sqlite3
 import rsa
 import tkinter
 from tkinter import messagebox
-
+ 
 conn = sqlite3.connect("database.db")
 cursor = conn.cursor()
 
-def display_recording(): 
-    frame_main.grid_forget()
-    frame_recording.grid(row=0, column=0, padx=180, pady=100)
+def display_recording():
+    frame_main.place_forget()
+    frame_recording.place(x=150, y=80)
 
-    
+     
 def check_recording():
+    frame_main.place_forget()
+    
     last_name = enter_last_name.get()
     firs_name = enter_firs_name.get()
     email = enter_email.get()
@@ -77,8 +79,8 @@ def connection():
 
 
 def back_recording():
-    frame_recording.grid_forget()
-    frame_main.grid(row=0, column=0, padx=190, pady=100)
+    frame_recording.place_forget()
+    frame_main.place(x=250, y=150)
     
     
 window = tkinter.Tk()
@@ -88,10 +90,13 @@ window.resizable(False, False)
 
 # Frame principale
 frame_main = tkinter.Frame(window)
-frame_main.grid(row=0, column=0, padx=180, pady=100)
+frame_main.place(x=250, y=150)
 
-bnt_recording = tkinter.Button(frame_main, text="Inscription", command=display_recording)
-bnt_recording.grid(row=0, column=0, padx=3, pady=5)
+bnt_recording = tkinter.Button(frame_main, text="Inscription", relief="flat", command=display_recording)
+bnt_recording.grid(row=0, column=0, ipadx=10, ipady=5)
+
+bnt_recording = tkinter.Button(frame_main, text="Connection", relief="flat", command=display_recording)
+bnt_recording.grid(row=1, column=0, ipadx=10, ipady=5)
 
 # Frame d'inscription
 frame_recording = tkinter.Frame(window)
