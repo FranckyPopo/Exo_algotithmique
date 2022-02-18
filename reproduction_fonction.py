@@ -17,8 +17,6 @@ def function_len(obj) -> int:
         i += 1
     return i
 
-# x = function_len(["hello word"])
-# print(x)
 
-x = function_range(0, 10, 2)
-print(x)
+
+
