@@ -1,20 +1,17 @@
 import sqlite3
-import rsa
 import tkinter
-from tkinter import messagebox
- 
-conn = sqlite3.connect("database.db")
-cursor = conn.cursor()
 
 def display_recording():
     frame_main.place_forget()
     frame_recording.place(x=150, y=80)
     
-def display_connectioo():
+    
+def display_connection():
+    frame_connection.place(x=150, y=180)
     frame_main.place_forget()
-    frame_connection.place(x=150, y=80)
+    frame_recording.place_forget()
 
-     
+
 def check_recording():
     frame_main.place_forget()
     
@@ -25,20 +22,16 @@ def check_recording():
     password_2 = enter_password_2.get()
     
     if last_name and firs_name and email and (password == password_2):
-        # Le programme crype le mot de passe
-        priv_key, pub_key = rsa.newkeys(512)
-        print(priv_key)
-        print(pub_key)
-        password_encrypt = rsa.encrypt(password_2.encode(), pub_key)
-        
         data_user = {
             "last_name": last_name,
             "firs_name": firs_name,
             "email": email,
-            "password": password_encrypt
+            "password": password_2
         }
         
         try:
+            conn = sqlite3.connect("database.db")
+            cursor = conn.cursor()
             cursor.execute("""
             CREATE TABLE IF NOT EXISTS users (
                 last_name text,
@@ -56,16 +49,16 @@ def check_recording():
             print("Une erreur est survenu dans le scripte SQL")
         else:
             messagebox.showinfo("Inscription", "Vous venez de crée un compte")
+            label_error.config(fg="white")
             
     else:
-        label_error["fg"] = "red"
+        label_error.config(fg="red")
 
     
-def connection():
-    frame_connection.place(x=100, y=100)
-    frame_main.place_forget()
-    frame_recording.place_forget()
+def check_connection():
     try:
+        conn = sqlite3.connect("database.db")
+        cursor = conn.cursor()
         get_data = cursor.execute("SELECT * FROM users")
         data_users = get_data.fetchall()
         conn.commit()
@@ -73,20 +66,22 @@ def connection():
     except sqlite3.Error:
         print("Une erreur est survenu dans le scripte SQL")
     else:
-        email = input("Veuillez entrer vôtre email: ")
-        password = input("Veuillez entrer vôtre mot de passe: ")
+        email = enter_email_connection.get()
+        password = enter_password_connection.get()
         
         for user in data_users:
             if user[2] == email and user[3] == password:
-                print("compte existe")
+                frame_x.place(x=125, y=200)
+                frame_connection.place_forget()
                 break
         else:
-            print("Le compte n'existe pas !")
+            label_error_2.config(fg="red")
 
 
 def back_recording():
     frame_recording.place_forget()
     frame_main.place(x=250, y=150)
+
 
 def back_connection():
     frame_connection.place_forget()
@@ -106,7 +101,7 @@ frame_main.place(x=250, y=150)
 bnt_recording = tkinter.Button(frame_main, text="Inscription", relief="flat", command=display_recording)
 bnt_recording.grid(row=0, column=0, ipadx=10, ipady=5)
 
-bnt_conn = tkinter.Button(frame_main, text="Connection", relief="flat", command=connection)
+bnt_conn = tkinter.Button(frame_main, text="Connection", relief="flat", command=display_connection)
 bnt_conn.grid(row=1, column=0, ipadx=10, ipady=5)
 
 # Frame d'inscription
@@ -158,13 +153,18 @@ label_password_connection.grid(row=2, column=0, sticky="w")
 enter_password_connection = tkinter.Entry(frame_connection, bg="white")
 enter_password_connection.grid(row=3, column=0, sticky="w")
 
-label_error = tkinter.Label(frame_connection, text="Une erreur est survenue lors de la connection", bg="white", fg="white")
-label_error.grid(row=4, column=0, sticky="w")
+label_error_2 = tkinter.Label(frame_connection, text="Une erreur est survenue lors de la connection", bg="white", fg="white")
+label_error_2.grid(row=4, column=0, sticky="w")
 
-bnt_connection = tkinter.Button(frame_connection, text="Se connecter", command=connection, bg="white")
+bnt_connection = tkinter.Button(frame_connection, text="Se connecter", command=check_connection, bg="white")
 bnt_connection.grid(row=5, column=0, sticky="w", ipadx=3, ipady=2)
 
 bnt_back_connection = tkinter.Button(frame_connection, text="Retour", command=back_connection)
 bnt_back_connection.grid(row=6, column=0, sticky="w", ipadx=3, ipady=2)
+
+# frame monsieur x
+frame_x = tkinter.Frame(window)
+label_x = tkinter.Label(frame_x, text="Bienvenue monsieur x", font=("Roboto", 36, "bold"))
+label_x.grid(row=0, column=0)
 
 window.mainloop()
